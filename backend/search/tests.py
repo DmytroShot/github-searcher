@@ -31,14 +31,24 @@ class SearchAPITests(APITestCase):
     def test_search_caching_behavior(self, mock_get):
         """Перевірка кешування в Redis: 1-й запит з мережі, 2-й запит з кешу"""
         mock_get.return_value.status_code = 200
-        mock_get.return_value.json.return_value = {"items": [{"id": 1, "login": "octocat"}]}
+        mock_get.return_value.json.return_value = {
+            "items": [
+                {
+                    "id": 1,
+                    "login": "octocat",
+                    "html_url": "https://github.com/octocat",
+                    "avatar_url": "https://avatars.githubusercontent.com/u/1?v=4",
+                }
+            ],
+            "total_count": 1,
+        }
 
-        res1 = self.client.get(self.search_url, {"type": "users", "text": "octocat"})
+        res1 = self.client.get(self.search_url, {"type": "users", "provider": "github", "text": "octocat"})
         self.assertEqual(res1.status_code, status.HTTP_200_OK)
         self.assertEqual(res1.data["source"], "network")
         self.assertEqual(mock_get.call_count, 1)
 
-        res2 = self.client.get(self.search_url, {"type": "users", "text": "octocat"})
+        res2 = self.client.get(self.search_url, {"type": "users", "provider": "github", "text": "octocat"})
         self.assertEqual(res2.status_code, status.HTTP_200_OK)
         self.assertEqual(res2.data["source"], "cache")
 

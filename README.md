@@ -61,18 +61,21 @@ http://127.0.0.1:5173
 
 ### Search endpoint
 
-`GET /api/search?text=<query>&type=<type>`
+`GET /api/search?text=<query>&type=<type>&provider=<provider>`
 
 Query parameters:
 
 - `text` — search term, must be at least 3 characters
 - `type` — one of `users`, `repositories`
+- `provider` — one of `github`, `gitlab`, `all` (default: `all`)
 
 Example:
 
 ```bash
-curl "http://127.0.0.1:8000/api/search?text=react&type=users"
+curl "http://127.0.0.1:8000/api/search?text=react&type=users&provider=gitlab"
 ```
+
+Note: GitLab user search may require a personal access token. Without `GITLAB_TOKEN`, GitLab user results can be empty or return no data.
 
 ### Clear cache
 
@@ -95,6 +98,8 @@ This endpoint clears Redis cache for all search results.
 ## Notes
 
 - Backend uses GitHub Search API with unauthenticated requests. Rate limits apply.
+- GitLab repository search works without auth, but GitLab user search may require `GITLAB_TOKEN`.
+- Add `GITLAB_TOKEN` in `backend/core/settings.py` from environment to enable authenticated GitLab requests.
 - Cache TTL is configured in `backend/core/settings.py` as `CACHE_TTL`.
 - Frontend uses `http://127.0.0.1:8000/api/search` for backend calls.
 
