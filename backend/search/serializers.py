@@ -49,6 +49,7 @@ class SavedItemSerializer(serializers.ModelSerializer):
             'title',
             'url',
             'avatar_url',
+            'star_count',
             'created_at',
         ]
         read_only_fields = ['id', 'created_at']

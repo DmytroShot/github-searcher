@@ -30,6 +30,10 @@ class ExternalSearchService:
                     "provider": "github",
                     "url": item["html_url"],
                     "avatar_url": item.get("avatar_url") or (item.get("owner", {}).get("avatar_url")),
+                    # include star counts for repositories (GitHub uses `stargazers_count`)
+                    "stargazers_count": item.get("stargazers_count", 0) if search_type != "users" else None,
+                    "star_count": item.get("stargazers_count", 0) if search_type != "users" else None,
+                    
                 })
             return {"items": items, "total": total}
         except requests.RequestException:
@@ -69,6 +73,9 @@ class ExternalSearchService:
                     "provider": "gitlab",
                     "url": item.get("web_url"),
                     "avatar_url": item.get("avatar_url"),
+                    # GitLab projects expose `star_count`
+                    "star_count": item.get("star_count", 0) if not is_user else None,
+                    "stargazers_count": item.get("star_count", 0) if not is_user else None,
                 })
             return {"items": items, "total": total}
         except requests.RequestException:

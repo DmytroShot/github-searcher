@@ -33,7 +33,6 @@ class SearchAPIView(APIView):
         page = serializer.validated_data.get("page", 1)
         per_page = serializer.validated_data.get("per_page", 12)
 
-        # Кеш включає всі параметри пошуку
         cache_key = f"search:{provider}:{search_type}:{query}:p{page}:s{per_page}"
         cached_data = cache.get(cache_key)
 
@@ -43,7 +42,6 @@ class SearchAPIView(APIView):
                 status=status.HTTP_200_OK,
             )
 
-        # Викликаємо сервіс замість написання requests тут
         data = ExternalSearchService.search(
             search_type=search_type,
             query=query,

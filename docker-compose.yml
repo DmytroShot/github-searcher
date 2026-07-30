@@ -41,6 +41,8 @@ services:
       - ./backend:/app
     ports:
       - "8000:8000"
+    env_file:
+      - ./backend/.env
     environment:
       - DB_NAME=${POSTGRES_DB:-search_db}
       - DB_USER=${POSTGRES_USER:-postgres}

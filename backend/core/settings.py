@@ -28,6 +28,10 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,backend,dev
 
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
 
+GROK_API_KEY= os.environ.get("GROK_API_KEY", "")
+GROK_BASE_URL = "https://api.groq.com/openai/v1"
+GROK_MODEL = os.getenv("GROK_MODEL", "grok-2-latest")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'search',
     'drf_spectacular',
+    'ai_assistant',
 ]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

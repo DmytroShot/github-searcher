@@ -16,6 +16,8 @@ class SavedItem(models.Model):
     title = models.CharField(max_length=255)
     url = models.URLField()
     avatar_url = models.URLField(blank=True, null=True)
+    # store star count for repositories when available
+    star_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
